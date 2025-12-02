@@ -1,0 +1,64 @@
+# ============================
+#   DJANGO / PYTHON
+# ============================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+*.env
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+*.db
+db.sqlite3
+
+# Media and static
+/media/
+staticfiles/
+static/
+
+# Local env variables
+.env
+*.secret
+*.key
+
+# Compiled
+*.dll
+*.exe
+*.o
+
+# ============================
+#   IDEs
+# ============================
+
+# VSCode
+.vscode/
+.code-workspace
+
+# PyCharm
+.idea/
+
+# ============================
+#   SYSTEM FILES
+# ============================
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# ============================
+#   BACKUPS
+# ============================
+*.bak
+*.old
+*.orig

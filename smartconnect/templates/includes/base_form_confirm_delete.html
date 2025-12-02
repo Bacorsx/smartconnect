@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - SmartConnect{% endblock %}
+
+{% block content %}
+<div class="card border-danger">
+  <div class="card-header bg-danger text-white">
+    <h5 class="mb-0">{{ title }}</h5>
+  </div>
+  <div class="card-body">
+    <p>¿Estás seguro que deseas eliminar <strong>{{ object }}</strong>?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+      <a href="{{ cancel_url }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

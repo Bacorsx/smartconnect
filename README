@@ -1,0 +1,228 @@
+📑 Tabla de Contenidos
+
+Características
+
+Arquitectura
+
+Tecnologías Usadas
+
+Modelos Principales
+
+Instalación
+
+.env
+
+Migraciones y Seeds
+
+Ejecutar en Local
+
+Autenticación JWT
+
+Endpoints
+
+Errores
+
+✨ Características
+
+SmartConnect proporciona una API RESTful completa con funcionalidades para:
+
+🔐 Autenticación & Roles
+
+JWT (access + refresh)
+
+Usuario personalizado con email como login
+
+Roles:
+
+ADMIN → CRUD total
+
+OPERADOR → solo lectura
+
+📡 Gestión IoT
+
+Sensores RFID con UID único
+
+Asociación a Usuario y Zona
+
+Estado del sensor (ACTIVO / INACTIVO / BLOQUEADO / PERDIDO)
+
+Control de barrera: ABIERTA / CERRADA
+
+📋 Eventos
+
+Registra accesos de sensores:
+
+Tipo: INTENTO / MANUAL
+
+Resultado: PERMITIDO / DENEGADO
+
+🛡 Validaciones y Seguridad
+
+UID único
+
+Estados válidos
+
+Manejo profesional de errores
+
+Handlers JSON globales
+
+🏗 Arquitectura del Proyecto
+smartconnect/
+│
+├── accounts/        # Usuarios, roles, login, permisos
+├── zonas/           # Departamentos / áreas físicas
+├── sensores/        # Sensores RFID, Barrera, Eventos
+├── api/             # ViewSets, routers, JWT, handlers
+│
+├── templates/       # Panel web (si usa)
+├── staticfiles/     # Archivos estáticos para producción
+│
+├── smartconnect/    # Settings, URLs, exception handlers
+├── requirements.txt
+└── manage.py
+
+🧠 Tecnologías Usadas
+Componente	Tecnología
+Backend	Django 5
+API	Django REST Framework
+Autenticación	SimpleJWT
+Base de datos	MySQL / MariaDB
+Medios	Pillow
+Entorno	python-dotenv
+Producción	Gunicorn + Whitenoise
+🔢 Modelos Principales
+👤 UsuarioApp
+
+Email como USERNAME_FIELD
+
+Nombre, avatar, teléfono
+
+Intentos fallidos, bloqueo
+
+Roles a través de:
+
+UserPerfil
+
+UserPerfilAsignacion
+
+🟩 Departamento
+
+Nombre único
+
+Zona física de acceso
+
+📟 Sensor
+
+UID único
+
+Estado del sensor
+
+FK → Departamento
+
+FK opcional → Usuario asignado
+
+📘 EventoAcceso
+
+Tipo: INTENTO / MANUAL
+
+Resultado PERMITIDO / DENEGADO
+
+Sensor + Usuario (si aplica)
+
+🚧 Barrera
+
+Estado: ABIERTA / CERRADA
+
+Controlable desde API
+
+🛠 Instalación
+git clone https://github.com/Bacorsx/smartconnect.git
+cd smartconnect
+
+Crear entorno virtual
+Windows:
+python -m venv venv
+venv\Scripts\activate
+
+Linux/Mac:
+python3 -m venv venv
+source venv/bin/activate
+
+Instalar dependencias
+pip install --upgrade pip
+pip install -r requirements.txt
+
+🔐 Archivo .env
+
+Crear un archivo .env en la raíz del proyecto:
+
+SECRET_KEY=tu_clave_secreta
+DEBUG=True
+
+DB_NAME=smartconnect
+DB_USER=root
+DB_PASSWORD=tu_pass
+DB_HOST=127.0.0.1
+DB_PORT=3307
+
+MEDIA_URL=/media/
+
+
+⚠️ No subir este archivo a GitHub.
+
+📦 Migraciones y Seeds
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py loaddata accounts/fixtures/seed.json
+
+▶️ Ejecutar en Local
+python manage.py runserver
+
+🔐 Autenticación JWT
+Login
+
+POST /api/auth/login/
+
+Body:
+
+{
+  "email": "admin@gmail.com",
+  "password": "123456"
+}
+
+
+Header:
+
+Authorization: Bearer <access_token>
+
+Refresh
+
+POST /api/auth/refresh/
+
+📡 Endpoints Principales
+Recurso	Endpoint	Métodos
+Info	/api/info/	GET
+Login	/api/auth/login/	POST
+Refresh	/api/auth/refresh/	POST
+Sensores	/api/sensores/	GET, POST
+Sensor detalle	/api/sensores/{id}/	GET, PUT, DELETE
+Zonas	/api/zonas/	CRUD
+Eventos	/api/eventos/	GET, POST
+Barrera	/api/barreras/	GET, PUT
+🚨 Manejo de Errores (JSON Uniforme)
+400 — Validación
+{
+  "detail": "Datos inválidos",
+  "errors": { "uid": ["UID duplicado"] }
+}
+
+401 — Sin autenticación
+{ "detail": "Autenticación requerida." }
+
+403 — Sin permisos
+{ "detail": "No tiene permisos para realizar esta acción." }
+
+404 — Recurso no encontrado
+{ "detail": "Recurso no encontrado." }
+{ "detail": "Ruta no encontrado." }
